@@ -36,6 +36,12 @@ const CourseDetails = (props) =>{
                         <Text style={Styles.detailsTextValue}>{item.Project}</Text>
                   </View>
                   <View style={Styles.detailsContainer}>
+                        <Text style={Styles.detailsText}>Course Scheduled</Text>
+                        {item.date || item.time ?
+                        <Text style={[Styles.detailsTextValue,{color:'blue'}]}>{item.date} at {item.time}</Text>
+                        :<Text style={[Styles.detailsTextValue]}>Not scheduled</Text> }
+                  </View>
+                  <View style={Styles.detailsContainer}>
                         <Text style={Styles.detailsText}>Project Description</Text>
                         <Text style={Styles.detailsTextValue}>{item.ProjectDescription}</Text>
                   </View>

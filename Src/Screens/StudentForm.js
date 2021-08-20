@@ -7,8 +7,10 @@ import Styles from '../Styles';
 import {Courses,Gender,CurrentSemester} from './Data';
 import * as Constants from '../Constants';
 import Feather from 'react-native-vector-icons/Feather';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import * as Actions from '../Actions';
 import {store} from '../ConfigureStore';
+import * as Validate from '../Components/Validation';
 
 var StudentList = {};
 class StudentForm extends Component{
@@ -25,10 +27,16 @@ class StudentForm extends Component{
             PhoneNumber:'',
             radioSelected:0,
             StudentArray:[],
-            validPhoneNumber:0,
             required:0,
             Name:'',
-            validEmail:0
+            validateName:false,
+            validateUSN: false,
+            validatePhoneNumber:false,
+            validateEmail:false,
+            validateGender:false,
+            validateSemester: false,
+            validateGrades: false,
+            validateCourse: false,
         }
     }
     onChangeText(key,value){
@@ -59,23 +67,22 @@ class StudentForm extends Component{
             validPhoneNumber:0,
             validEmail:0,
             required:0,
-            Name:''
+            Name:'',
+            validateName:false,
+            validateUSN: false,
+            validatePhoneNumber:false,
+            validateEmail:false,
+            validateGender:false,
+            validateSemester: false,
+            validateGrades: false,
+            validateCourse: false,
           })
       }
-      validatePhoneNumber = (phone_number) => {
-        // var re = /^[1-9][0-9]{9}$/;
-          return Constants.RE_PHONE_NO.test(phone_number);
-      };
-
-      validateEmail = (email) => {
-        // var re = /^[1-9][0-9]{9}$/;
-          return Constants.GMAIL.test(email);
-      };
 
       radioClick(type,id) {
         this.setState({
           Gender: type,
-          radioSelected:id, required:this.state.required+1
+          radioSelected:id
         });
         this.onChangeText('Gender',type);
       }
@@ -123,10 +130,13 @@ class StudentForm extends Component{
             <ScrollView showsVerticalScrollIndicator={false}>
             <DismissKeyboard>
             <View style={{marginLeft: 20,marginRight: 20,marginTop: 10}}>
-            <View>
+            <View style={{marginBottom: 20}}>
+                    <View style={{flexDirection:'row'}}>
                     <Text style={Styles.FormText}>
                         Name
                     </Text>
+                    <Fontisto name='asterisk' size={8} color='red' style={{paddingTop:5}}/>
+                    </View>
                     <TextInput
                         defaultValue=''
                         value={this.state.Name}
@@ -136,14 +146,23 @@ class StudentForm extends Component{
                         keyboardType='default'
                         placeholderTextColor= '#c2c2d6'
                         onBlur={()=>{
-                            this.setState({required:this.state.required+1})
+                            if(Validate.validateString(this.state.Name)){
+                                this.setState({validateName:true})
+                            } else {
+                                this.setState({validateName:false})
+                            }
                         }}
                     />
+                    {this.state.validateName?
+                        <Text style={{fontSize:12,color:'red'}}>Invalid name</Text>:null}
                 </View>
                 <View>
+                    <View style={{flexDirection:'row'}}>
                     <Text style={Styles.FormText}>
                         USN
                     </Text>
+                    <Fontisto name='asterisk' size={8} color='red' style={{paddingTop:5}}/>
+                    </View>
                     <TextInput
                         defaultValue=''
                         value={this.state.USN}
@@ -154,14 +173,23 @@ class StudentForm extends Component{
                         keyboardType='default'
                         placeholderTextColor= '#c2c2d6'
                         onBlur={()=>{
-                            this.setState({required:this.state.required+1})
+                            if(Validate.validateAlphaNumeric(this.state.USN)){
+                                this.setState({validateUSN:true})
+                            } else {
+                                this.setState({validateUSN:false})
+                            }
                         }}
                     />
+                    {this.state.validateUSN?
+                        <Text style={{fontSize:12,color:'red'}}>Invalid USN</Text>:null}
                 </View>
                 <View>
+                    <View style={{flexDirection:'row'}}>
                     <Text style={Styles.FormText}>
-                    Current Semester
+                        Current Semester
                     </Text>
+                    <Fontisto name='asterisk' size={8} color='red' style={{paddingTop:5}}/>
+                    </View>
                     <Dropdown
                         data={CurrentSemester}
                         dropdownOffset={{ top: 0, right: 0}}
@@ -176,8 +204,15 @@ class StudentForm extends Component{
                         animationDuration={150}
                         valueExtractor={({value}) =>value}
                         onChangeText={(value, key) => {
-                            this.setState({CurrentSemester:value,required:this.state.required+1});
+                            this.setState({CurrentSemester:value});
                             this.onChangeText('CurrentSemester', value)
+                        }}
+                        onBlur={()=>{
+                            if(Validate.validateAlphaNumericWithSpace(this.state.CurrentSemester)){
+                                this.setState({validateSemester:true})
+                            } else {
+                                this.setState({validateSemester:false})
+                            }
                         }}
                         underlineColor='white'
                         value={this.state.CurrentSemester}
@@ -188,13 +223,17 @@ class StudentForm extends Component{
                         style={{fontSize:16}}
                         underlineColorAndroid="transparent"
                         inputContainerStyle={{ borderBottomColor:'transparent', paddingTop:10,paddingLeft:5}}
-
                     />
+                    {this.state.validateSemester?
+                        <Text style={{fontSize:12,color:'red'}}>Invalid Semester</Text>:null}
                 </View>
                 <View>
+                    <View style={{flexDirection:'row'}}>
                     <Text style={Styles.FormText}>
-                        Total grades
+                        Total Grades
                     </Text>
+                    <Fontisto name='asterisk' size={8} color='red' style={{paddingTop:5}}/>
+                    </View>
                     <TextInput
                         defaultValue=''
                         value={this.state.TotalGrades}
@@ -205,14 +244,23 @@ class StudentForm extends Component{
                         keyboardType='default'
                         placeholderTextColor= '#c2c2d6'
                         onBlur={()=>{
-                            this.setState({required:this.state.required+1});
+                            if(Validate.validateAlphaNumericWithSpace(this.state.TotalGrades)){
+                                this.setState({validateGrades:true})
+                            } else {
+                                this.setState({validateGrades:false})
+                            }
                         }}
                     />
+                    {this.state.validateGrades?
+                        <Text style={{fontSize:12,color:'red'}}>Invalid grades</Text>:null}
                 </View>
                 <View>
+                    <View style={{flexDirection:'row'}}>
                     <Text style={Styles.FormText}>
                         Courses Offered
                     </Text>
+                    <Fontisto name='asterisk' size={8} color='red' style={{paddingTop:5}}/>
+                    </View>
                     <Dropdown
                         placeholder='Courses Offered'
                         data={Courses}
@@ -228,8 +276,15 @@ class StudentForm extends Component{
                         animationDuration={150}
                         valueExtractor={({value}) =>value}
                         onChangeText={(value, key) => {
-                            this.setState({CoursesOffered:value,required:this.state.required+1});
+                            this.setState({CoursesOffered:value});
                             this.onChangeText('CoursesOffered', value)
+                        }}
+                        onBlur={()=>{
+                            if(Validate.validateString(this.state.CoursesOffered)){
+                                this.setState({validateCourse:true})
+                            } else {
+                                this.setState({validateCourse:false})
+                            }
                         }}
                         underlineColor='white'
                         value={this.state.CoursesOffered}
@@ -241,11 +296,16 @@ class StudentForm extends Component{
                         underlineColorAndroid="transparent"
                         inputContainerStyle={{ borderBottomColor:'transparent', paddingTop:10,paddingLeft:5}}
                     />
+                    {this.state.validateCourse?
+                    <Text style={{fontSize:12,color:'red'}}>Invalid course</Text>:null}
                 </View>
                 <View>
+                    <View style={{flexDirection:'row'}}>
                     <Text style={Styles.FormText}>
                         Email
                     </Text>
+                    <Fontisto name='asterisk' size={8} color='red' style={{paddingTop:5}}/>
+                    </View>
                     <TextInput
                         defaultValue=''
                         value={this.state.Email}
@@ -255,26 +315,32 @@ class StudentForm extends Component{
                         keyboardType='email-address'
                         placeholderTextColor= '#c2c2d6'
                         onBlur={()=>{
-                            if (!this.validateEmail(this.state.Email)) {
-                                this.setState({validEmail: 2})
+                            if (Validate.validateEmail(this.state.Email)) {
+                                this.setState({validEmail:true})
                               } else {
-                                this.setState({validEmail: 1,required:this.state.required+1})
+                                this.setState({validEmail:false})
                               }
                         }}
                     />
-                    {this.state.validEmail===2?
+                    {this.state.validEmail?
                     <Text style={{fontSize:12,color:'red'}}>Invalid email format</Text>:null}
                 </View>
                 <View>
-                    <Text style={Styles.FormText}>
+                    <View style={{flexDirection:'row'}}>
+                    <Text style={[Styles.FormText,{paddingTop:20}]}>
                         Gender
                     </Text>
+                    <Fontisto name='asterisk' size={8} color='red' style={{paddingTop:25}}/>
+                    </View>
                     {this.RadioButton()}
                 </View>
                 <View>
+                    <View style={{flexDirection:'row'}}>
                     <Text style={Styles.FormText}>
                         Phone Number
                     </Text>
+                    <Fontisto name='asterisk' size={8} color='red' style={{paddingTop:5}}/>
+                    </View>
                     <TextInput
                         defaultValue=''
                         value={this.state.PhoneNumber}
@@ -285,19 +351,25 @@ class StudentForm extends Component{
                         placeholderTextColor= '#c2c2d6'
                         maxLength={10}
                         onBlur={()=>{
-                            if (!this.validatePhoneNumber(this.state.PhoneNumber)) {
-                                this.setState({validPhoneNumber: 2})
+                            if (Validate.validatePhoneNumber(this.state.PhoneNumber)) {
+                                this.setState({validPhoneNumber: true})
                               } else {
-                                this.setState({validPhoneNumber: 1,required:this.state.required+1})
+                                this.setState({validPhoneNumber: false})
                               }
                         }}
                     />
-                    {this.state.validPhoneNumber===2?
+                    {this.state.validPhoneNumber?
                     <Text style={{fontSize:12,color:'red'}}>Invalid phone number format</Text>:null}
                 </View>
             </View>
             </DismissKeyboard>
-            {this.state.validPhoneNumber===1 && this.state.validEmail===1?
+            {this.state.validateName && 
+            this.state.validPhoneNumber && 
+            this.state.validEmail && 
+            this.state.validateCourse && 
+            this.state.validateGender && 
+            this.state.validateGrades &&
+            this.state.validateUSN ?
             <TouchableOpacity style={[Styles.saveButton,{backgroundColor:'#2e5bb6'}]} onPress={()=>this.SaveData()}>
                 <Text style={[Styles.loginButtonText,{color:'#fff'}]}>Save</Text>
             </TouchableOpacity>:

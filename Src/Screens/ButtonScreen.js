@@ -9,8 +9,7 @@ import {Auth} from 'aws-amplify';
 import { store } from '../ConfigureStore';
 import * as Actions from '../Actions';
 
-class ButtunScreen extends Component {
-    
+class ButtunScreen extends Component {   
     signOut(){
         Auth.currentSession()
       .then(res => {

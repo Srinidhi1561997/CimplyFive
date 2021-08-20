@@ -44,3 +44,6 @@ export const VERIFIED_SUCCESS = 'Account verified successfully';
 export const INVALID_USERNAME ='Invalid username';
 export const SIGNUP_SUCCESS = 'Signup successfully, please verify your account before login';
 export const SIGNIN_SUCCESS = 'User logged in successfully';
+export const SIMPLE_STRING = /^(?!\s*$)[a-zA-Z\s]{1,100}$/;
+export const ALPHA_NUMERIC = /^[a-zA-Z0-9_]*$/;
+export const ALPHA_NUMERIC_WITH_WHITESPACE = /^[a-zA-Z0-9_\s]*$/;

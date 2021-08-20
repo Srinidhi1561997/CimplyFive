@@ -72,7 +72,7 @@ const Styles = StyleSheet.create({
         height: 50,
         fontSize: 16,
         fontWeight: 'normal',
-        marginBottom: 20,
+        // marginBottom: 20,
       },
       saveButton: {
         width: 100,

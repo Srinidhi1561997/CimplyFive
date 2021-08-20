@@ -14,8 +14,20 @@ export const signed = (signed) => ({
         student,
     }
   });
+  export const DeleteStudent = (student) => ({
+    type: reduxConstants.DELETE_STUDENT,
+    payload: {
+        student,
+    }
+  });
   export const CourseDb = (course) => ({
     type: reduxConstants.COURSE_DB,
+    payload: {
+        course,
+    }
+  });
+  export const DeleteCourse = (course) => ({
+    type: reduxConstants.DELETE_COURSE,
     payload: {
         course,
     }

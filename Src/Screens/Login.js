@@ -460,14 +460,12 @@ getGreetingTime = (currentTime) => {
 
 
   showMain() {
-    const { currentState } = this.state;
-    // let message = this.getGreetingTime(moment());   
+    const { currentState } = this.state;   
     let message='CimplyFive';
     let subtitle = Constants.WELCOME_BACK;
     let loginText = Constants.LOGIN;
     if (currentState === Constants.STATE_NORMAL) {
       loginText=Constants.LOGIN;
-      // message='hello'
     } else if (currentState === Constants.STATE_PASSWORD_UPDATED) {
         message = '';
         subtitle = 'Password Successfully Updated\n' + 'You are all set to go!';
@@ -482,9 +480,9 @@ getGreetingTime = (currentTime) => {
 
     return (
       <View style={[Styles.container,{backgroundColor:'#2e5bb6'}]}>
-        {/* <DismissKeyboard> */}
         <Loader loading={this.state.loading} />
         <CloseAppMsg backButtonPressed={this.state.backButtonPressed} parentCallback = {this.handleCallback}/>
+        <DismissKeyboard>
         <KeyboardAvoidingView
           style={{flex:1}}
           behavior={Platform.OS === 'ios' ? 'padding' : null}
@@ -500,7 +498,7 @@ getGreetingTime = (currentTime) => {
             {this.getMainContainer(loginText, subtitle)}
           </View>
         </KeyboardAvoidingView>
-      {/* </DismissKeyboard> */}
+      </DismissKeyboard>
       </View>
     );
   }
